@@ -73,20 +73,20 @@ async def command_search(update: Update, context: ContextTypes.DEFAULT_TYPE):
         parse_mode='Markdown'
     )
 
-if __name__ == '__main__':
-    application = ApplicationBuilder().token(TOKEN).build()
-    
+def register_handlers(application):
     start_handler = CommandHandler('start', start)
     help_handler = CommandHandler('help', help_command)
     search_cmd_handler = CommandHandler('search', command_search)
-    
-    # Handle any text that is NOT a command
     msg_handler = MessageHandler(filters.TEXT & (~filters.COMMAND), handle_search)
     
     application.add_handler(start_handler)
     application.add_handler(help_handler)
     application.add_handler(search_cmd_handler)
     application.add_handler(msg_handler)
+
+if __name__ == '__main__':
+    application = ApplicationBuilder().token(TOKEN).build()
+    register_handlers(application)
     
     print("Bot is running...")
     application.run_polling()
